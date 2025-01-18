@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Game</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #282c34;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #gameCanvas {
+      border: 2px solid white;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Simple Click Game</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <p>Click the square to score points!</p>
+    <p id="score">Score: 0</p>
+  </div>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let score = 0;
+    let square = { x: 50, y: 50, size: 50 };
+
+    function drawSquare() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'red';
+      ctx.fillRect(square.x, square.y, square.size, square.size);
+    }
+
+    function randomPosition() {
+      square.x = Math.random() * (canvas.width - square.size);
+      square.y = Math.random() * (canvas.height - square.size);
+    }
+
+    canvas.addEventListener('click', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      if (
+        mouseX >= square.x &&
+        mouseX <= square.x + square.size &&
+        mouseY >= square.y &&
+        mouseY <= square.y + square.size
+      ) {
+        score++;
+        document.getElementById('score').textContent = `Score: ${score}`;
+        randomPosition();
+        drawSquare();
+      }
+    });
+
+    drawSquare();
+  </script>
+</body>
+</html>
